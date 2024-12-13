@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
 function getMonthData(year: number, month: number) {
@@ -21,7 +21,12 @@ const daysOfWeek = [
 ];
 
 export default function GridPage() {
+  const [today, setToday] = useState(new Date());
   const [currentDate, setCurrentDate] = useState(new Date());
+
+  useEffect(() => {
+    setToday(new Date());
+  }, []);
 
   const goToPreviousMonth = () => {
     setCurrentDate(
@@ -67,25 +72,37 @@ export default function GridPage() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex justify-center items-center p-4 h-4 mt-2 ">
-        <button
-          onClick={goToPreviousMonth}
-          className="p-2 rounded-full hover:bg-gray-200"
-        >
-          <ChevronLeftIcon className="w-6 h-6" />
-        </button>
-        <h2 className="text-xl font-bold">
-          {currentDate.toLocaleString("default", {
-            month: "long",
-            year: "numeric",
-          })}
-        </h2>
-        <button
-          onClick={goToNextMonth}
-          className="p-2 rounded-full hover:bg-gray-200"
-        >
-          <ChevronRightIcon className="w-6 h-6" />
-        </button>
+      <div className="flex justify-between items-center p-4 h-4 mt-2 ">
+        <div>
+          <p className="text-black">
+            Today:{" "}
+            {
+              <span className="italic text-gray-500 ">
+                {today.toDateString()}
+              </span>
+            }
+          </p>
+        </div>
+        <div className="flex items-center justify-between ">
+          <button
+            onClick={goToPreviousMonth}
+            className="p-2 rounded-full hover:bg-gray-200"
+          >
+            <ChevronLeftIcon className="w-6 h-6" />
+          </button>
+          <h2 className="text-xl font-bold">
+            {currentDate.toLocaleString("default", {
+              month: "long",
+              year: "numeric",
+            })}
+          </h2>
+          <button
+            onClick={goToNextMonth}
+            className="p-2 rounded-full hover:bg-gray-200"
+          >
+            <ChevronRightIcon className="w-6 h-6" />
+          </button>
+        </div>
       </div>
       <div className="p-4 sm:p-6 lg:p-4">
         <div className="grid grid-cols-7 gap-2 h-full">
@@ -133,24 +150,3 @@ export default function GridPage() {
     </div>
   );
 }
-
-// <div className="max-w-2xl mx-auto">
-//   <h2 className="text-3xl font-bold font-serif mb-6 flex items-center">
-//     <CalendarIcon className="w-8 h-8 mr-2 text-blue-600" />
-//     Your Calendar
-//   </h2>
-//   <div className="bg-white shadow-lg rounded-lg overflow-hidden flex gap-4 p-2">
-//     <Calendar
-//       onChange={(value) => onDateChange(value)}
-//       value={date}
-//       className="border-none p-4"
-//     />
-//     <p className=" text-gray-600">
-//       Selected date:{" "}
-//       {`${
-//         // convert Value to Date String
-//         date ? new Date(Date.parse(date?.toString())).toDateString() : ""
-//       }`}
-//     </p>
-//   </div>
-// </div>
