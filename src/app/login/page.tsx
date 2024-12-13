@@ -15,7 +15,7 @@ export default function Login() {
             onClick={async () => {
               try {
                 const response = await fetch(
-                  `${process.env.BACKEND_URL}/calendar/auth`
+                  `${process.env.NEXT_PUBLIC_BACKEND_URL}/calendar/auth`
                 );
                 const data = await response.json();
                 if (data.authUrl) {
