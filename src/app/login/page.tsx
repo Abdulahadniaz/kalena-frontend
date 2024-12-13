@@ -4,7 +4,7 @@ import { OutlookIcon } from "./OutlookIcon";
 
 export default function Login() {
   return (
-    <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+    <div className="max-w-md mx-auto mt-2 bg-white shadow-lg rounded-lg overflow-hidden">
       <div className="px-6 py-8">
         <h2 className="text-3xl font-bold font-serif mb-6 text-center">
           Link one or more calendars here
