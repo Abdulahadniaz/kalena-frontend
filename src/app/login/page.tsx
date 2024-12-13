@@ -18,8 +18,8 @@ export default function Login() {
                   `${process.env.NEXT_PUBLIC_BACKEND_URL}/calendar/auth`
                 );
                 const data = await response.json();
-                if (data.authUrl) {
-                  window.location.href = data.authUrl;
+                if (data.auth_url) {
+                  window.location.href = data.auth_url;
                 } else {
                   console.error("No authorization URL received");
                 }
