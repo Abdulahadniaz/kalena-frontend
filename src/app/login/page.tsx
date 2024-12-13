@@ -12,8 +12,20 @@ export default function Login() {
         <div className="space-y-2">
           <button
             className="w-full bg-white border border-gray-300 text-gray-700 font-semibold py-3 px-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex items-center justify-center"
-            onClick={() => {
-              /* Implement Google OAuth logic here */
+            onClick={async () => {
+              try {
+                const response = await fetch(
+                  `${process.env.BACKEND_URL}/calendar/auth`
+                );
+                const data = await response.json();
+                if (data.authUrl) {
+                  window.location.href = data.authUrl;
+                } else {
+                  console.error("No authorization URL received");
+                }
+              } catch (error) {
+                console.error("Failed to initiate OAuth flow:", error);
+              }
             }}
           >
             <GoogleIcon className="w-6 h-6 mr-2" />
