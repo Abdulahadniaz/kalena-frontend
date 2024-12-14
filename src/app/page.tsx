@@ -29,7 +29,7 @@ type Event = {
 export default function GridPage() {
   const [today, setToday] = useState(new Date());
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const [, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
@@ -107,11 +107,11 @@ export default function GridPage() {
                 {today.toDateString()}
               </span>
             }
-            {!loading && (
+            {/* {!loading && (
               <span className="italic text-gray-500 ">
                 {" - "}Number of upcoming events:
               </span>
-            )}
+            )} */}
           </p>
         </div>
         <div className="flex items-center justify-between ">
