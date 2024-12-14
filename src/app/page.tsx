@@ -37,7 +37,6 @@ export default function GridPage() {
   }, []);
 
   useEffect(() => {
-    const isUserAuthenticated = localStorage.getItem("isUserAuthenticated");
     const fetchEvents = async () => {
       setLoading(true);
       try {
@@ -51,12 +50,7 @@ export default function GridPage() {
       }
       setLoading(false);
     };
-    if (isUserAuthenticated === "true") {
-      fetchEvents();
-    } else {
-      setLoading(false);
-      setEvents([]);
-    }
+    fetchEvents();
   }, []);
 
   const goToPreviousMonth = () => {
