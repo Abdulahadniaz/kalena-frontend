@@ -44,6 +44,7 @@ export default function GridPage() {
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/calendar/upcoming-events`
         );
         const data = await response.json();
+        console.log(data);
         setEvents(data.events);
       } catch (error) {
         console.error("Failed to fetch events:", error);
