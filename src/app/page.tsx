@@ -45,7 +45,7 @@ export default function GridPage() {
         );
         const data = await response.json();
         console.log(data);
-        setEvents(data.events);
+        setEvents(data && data.events);
       } catch (error) {
         console.error("Failed to fetch events:", error);
       }
