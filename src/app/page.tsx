@@ -20,12 +20,33 @@ const daysOfWeek = [
   "Saturday",
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Event = any;
+
 export default function GridPage() {
   const [today, setToday] = useState(new Date());
   const [currentDate, setCurrentDate] = useState(new Date());
-
+  const [loading, setLoading] = useState(true);
+  const [events, setEvents] = useState<Event[]>([]);
   useEffect(() => {
     setToday(new Date());
+  }, []);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/calendar/upcoming-events`
+        );
+        const data = await response.json();
+        setEvents(data.events);
+      } catch (error) {
+        console.error("Failed to fetch events:", error);
+      }
+      setLoading(false);
+    };
+    fetchEvents();
   }, []);
 
   const goToPreviousMonth = () => {
@@ -81,6 +102,11 @@ export default function GridPage() {
                 {today.toDateString()}
               </span>
             }
+            {!loading && (
+              <span className="italic text-gray-500 ">
+                {" - "}Number of upcoming events: {events.length}
+              </span>
+            )}
           </p>
         </div>
         <div className="flex items-center justify-between ">
