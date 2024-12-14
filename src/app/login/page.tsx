@@ -14,8 +14,10 @@ export default function Login() {
       const data = await response.json();
       if (data.auth_url) {
         window.location.href = data.auth_url;
+        localStorage.setItem("isUserAuthenticated", "true");
       } else {
         console.error("No authorization URL received");
+        localStorage.setItem("isUserAuthenticated", "false");
       }
     } catch (error) {
       console.error("Failed to initiate OAuth flow:", error);

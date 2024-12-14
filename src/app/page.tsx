@@ -20,19 +20,24 @@ const daysOfWeek = [
   "Saturday",
 ];
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Event = any;
+type Event = {
+  id: string;
+  title: string;
+  date: string;
+};
 
 export default function GridPage() {
   const [today, setToday] = useState(new Date());
   const [currentDate, setCurrentDate] = useState(new Date());
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
+
   useEffect(() => {
     setToday(new Date());
   }, []);
 
   useEffect(() => {
+    const isUserAuthenticated = localStorage.getItem("isUserAuthenticated");
     const fetchEvents = async () => {
       setLoading(true);
       try {
@@ -46,7 +51,12 @@ export default function GridPage() {
       }
       setLoading(false);
     };
-    fetchEvents();
+    if (isUserAuthenticated === "true") {
+      fetchEvents();
+    } else {
+      setLoading(false);
+      setEvents([]);
+    }
   }, []);
 
   const goToPreviousMonth = () => {
@@ -148,17 +158,18 @@ export default function GridPage() {
             const isCurrentMonth = dayNumber > 0 && dayNumber <= daysInMonth;
             const isWeekend = index % 7 === 0 || index % 7 === 6;
             const isTodayDate = isToday(dayNumber);
+
             return (
               <div
                 key={index}
-                className={`rounded-lg shadow-md flex items-center justify-center p-4 aspect-[12/6]
+                className={`rounded-lg shadow-md flex flex-col items-center justify-start p-2 aspect-[12/6] overflow-hidden
                 ${isWeekend ? "bg-gray-200" : "bg-white"}
                 ${index % 7 === 6 ? "border-r-0" : ""}
                 ${Math.floor(index / 7) === weeks - 1 ? "border-b-0" : ""}`}
-                onClick={() => handleCellClick(index)}
+                onClick={() => handleCellClick(dayNumber)}
               >
                 <span
-                  className={`text-gray-600 font-light ${
+                  className={`text-gray-600 font-light mb-1 ${
                     isCurrentMonth ? "" : "opacity-30"
                   } ${
                     isTodayDate
