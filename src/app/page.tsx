@@ -51,7 +51,7 @@ export default function GridPage() {
       }
       setLoading(false);
     };
-    fetchEvents();
+    // fetchEvents();
   }, []);
 
   const goToPreviousMonth = () => {
