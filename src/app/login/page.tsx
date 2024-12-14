@@ -32,13 +32,19 @@ export default function Login() {
           Link one or more calendars here
         </h2>
         <div className="space-y-2">
-          <button
-            className="w-full bg-white border border-gray-300 text-gray-700 font-semibold py-3 px-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex items-center justify-center"
-            onClick={() => linkGoogleCalendar()}
-          >
-            <GoogleIcon className="w-6 h-6 mr-2" />
-            {loading ? "Opening Google Calendar..." : "Link Google Calendar"}
-          </button>
+          {localStorage.getItem("isUserAuthenticated") === "true" ? (
+            <p className="w-full bg-white border border-gray-300 text-gray-700 font-semibold py-3 px-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex items-center justify-center">
+              Google Calendar is already linked
+            </p>
+          ) : (
+            <button
+              className="w-full bg-white border border-gray-300 text-gray-700 font-semibold py-3 px-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex items-center justify-center"
+              onClick={() => linkGoogleCalendar()}
+            >
+              <GoogleIcon className="w-6 h-6 mr-2" />
+              {loading ? "Opening Google Calendar..." : "Link Google Calendar"}
+            </button>
+          )}
           <button
             className="w-full bg-white border border-gray-300 text-gray-700 font-semibold py-3 px-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex items-center justify-center"
             onClick={() => {
