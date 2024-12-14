@@ -30,7 +30,7 @@ export default function GridPage() {
   const [today, setToday] = useState(new Date());
   const [currentDate, setCurrentDate] = useState(new Date());
   const [loading, setLoading] = useState(true);
-  const [events, setEvents] = useState<Event[]>([]);
+  const [, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     setToday(new Date());
@@ -109,7 +109,7 @@ export default function GridPage() {
             }
             {!loading && (
               <span className="italic text-gray-500 ">
-                {" - "}Number of upcoming events: {events.length}
+                {" - "}Number of upcoming events:
               </span>
             )}
           </p>
