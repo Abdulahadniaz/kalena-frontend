@@ -44,8 +44,8 @@ export function Modal({
         ref={modalRef}
         className={`bg-white rounded-lg p-6 ${
           size === "large"
-            ? "w-10/12 `max-w-3xl` h-5/6 overflow-y-auto"
-            : "w-10/12 max-w-sm"
+            ? "w-4/12 `max-w-xl` h-5/6 overflow-y-auto"
+            : "w-2/12 max-w-xl"
         }`}
       >
         <div className="flex justify-between items-center mb-4">

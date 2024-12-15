@@ -333,20 +333,25 @@ export default function GridPage() {
       <Modal
         isOpen={isSmallModalOpen}
         onClose={() => setIsSmallModalOpen(false)}
-        title={`All Events for ${
+        title={`${
           selectedDay
             ? new Date(
                 currentDate.getFullYear(),
                 currentDate.getMonth(),
                 selectedDay
-              ).toDateString()
+              ).toLocaleString("default", {
+                month: "short",
+                day: "numeric",
+              })
             : ""
         }`}
       >
         <div className="mt-4">
           {selectedEvents.map((event, index) => (
             <div key={index} className="mb-2">
-              <p className="font-semibold">{event.summary}</p>
+              <p className="sm:text-sm text-xs font-light text-white bg-blue-500 rounded-full px-1 text-center sm:w-[20px] xl:w-[190px] sm:py-1 lg:py-0.5 hover:cursor-pointer hover:bg-blue-600">
+                {event.summary}
+              </p>
             </div>
           ))}
         </div>
