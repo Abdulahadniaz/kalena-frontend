@@ -107,6 +107,7 @@ export default function GridPage() {
               {events !== null &&
                 events.length > 0 &&
                 " - " + events.length + " events upcoming"}
+              {events === null && " - No events found"}
             </span>
           </p>
         </div>
