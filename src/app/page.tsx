@@ -22,8 +22,9 @@ const daysOfWeek = [
 
 type Event = {
   id: string;
-  title: string;
-  date: string;
+  summary: string;
+  start: string;
+  end: string;
 };
 
 export default function GridPage() {
@@ -85,6 +86,26 @@ export default function GridPage() {
         clickedDate.getDay() === 0 || clickedDate.getDay() === 6
       );
     }
+  };
+
+  const getEventSummariesForDay = (dayNumber: number) => {
+    const clickedDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      dayNumber
+    );
+    const eventSummaries = events
+      .filter((event) => {
+        const eventStartDate = new Date(event.start);
+        return (
+          eventStartDate.getDate() === clickedDate.getDate() &&
+          eventStartDate.getMonth() === clickedDate.getMonth() &&
+          eventStartDate.getFullYear() === clickedDate.getFullYear()
+        );
+      })
+      .map((event) => event.summary); // Collect all summaries
+
+    return eventSummaries.length > 0 ? eventSummaries : null; // Return summaries or null
   };
 
   const isToday = (dayNumber: number) => {
@@ -150,11 +171,12 @@ export default function GridPage() {
             const isCurrentMonth = dayNumber > 0 && dayNumber <= daysInMonth;
             const isWeekend = index % 7 === 0 || index % 7 === 6;
             const isTodayDate = isToday(dayNumber);
+            const eventSummaries = getEventSummariesForDay(dayNumber); // Get all event summaries for the day
 
             return (
               <div
                 key={index}
-                className={`rounded-lg shadow-sm flex flex-col items-center justify-start p-1 sm:p-2 sm:aspect-square xl:aspect-[12/6] overflow-hidden
+                className={`rounded-lg shadow-sm flex flex-col items-center justify-start p-1 sm:p-2 sm:aspect-square xl:aspect-[16/10] overflow-hidden
                 ${isWeekend ? "bg-gray-200" : "bg-white"}
                 ${index % 7 === 6 ? "border-r-0" : ""}
                 ${Math.floor(index / 7) === weeks - 1 ? "border-b-0" : ""}
@@ -166,12 +188,32 @@ export default function GridPage() {
                   ${isCurrentMonth ? "" : "opacity-30"}
                   ${
                     isTodayDate
-                      ? "bg-blue-500 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded-full"
+                      ? "bg-blue-800 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded-full"
                       : ""
                   }`}
                 >
                   {isCurrentMonth ? dayNumber : ""}
                 </span>
+                <div className="flex flex-col items-center justify-center space-y-1 ">
+                  {eventSummaries && eventSummaries.length > 0 && (
+                    <>
+                      {eventSummaries.slice(0, 2).map((summary, idx) => (
+                        <span
+                          key={idx}
+                          // make each event summary in a rounded box
+                          className="sm:text-sm text-xs font-light text-white bg-blue-500 rounded-full px-1 text-center sm:w-[20px] xl:w-[190px] sm:py-1 lg:py-0.5"
+                        >
+                          {summary}
+                        </span>
+                      ))}
+                      {eventSummaries.length > 2 && (
+                        <span className="sm:text-sm text-xs font-light text-black hover:bg-gray-300 rounded-full px-1 text-center sm:w-[20px] xl:w-[190px] sm:py-1 lg:py-0.5">
+                          {eventSummaries.length - 2} more events
+                        </span>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
             );
           })}
