@@ -41,7 +41,7 @@ export default function GridPage() {
       setLoading(true);
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/calendar/upcoming-events`
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/calendar/events`
         );
         const data = await response.json();
         console.log(data);
