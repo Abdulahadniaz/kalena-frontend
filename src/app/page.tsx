@@ -20,38 +20,38 @@ const daysOfWeek = [
   "Saturday",
 ];
 
-// type Event = {
-//   id: string;
-//   title: string;
-//   date: string;
-// };
+type Event = {
+  id: string;
+  title: string;
+  date: string;
+};
 
 export default function GridPage() {
   const [today, setToday] = useState(new Date());
   const [currentDate, setCurrentDate] = useState(new Date());
-  // const [, setLoading] = useState(true);
-  // const [, setEvents] = useState<Event[]>([]);
+  const [, setLoading] = useState(true);
+  const [, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     setToday(new Date());
   }, []);
 
   useEffect(() => {
-    // const fetchEvents = async () => {
-    //   setLoading(true);
-    //   try {
-    //     const response = await fetch(
-    //       `${process.env.NEXT_PUBLIC_BACKEND_URL}/calendar/upcoming-events`
-    //     );
-    //     const data = await response.json();
-    //     console.log(data);
-    //     setEvents(data && data.events);
-    //   } catch (error) {
-    //     console.error("Failed to fetch events:", error);
-    //   }
-    //   setLoading(false);
-    // };
-    // fetchEvents();
+    const fetchEvents = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/calendar/upcoming-events`
+        );
+        const data = await response.json();
+        console.log(data);
+        setEvents(data && data.events);
+      } catch (error) {
+        console.error("Failed to fetch events:", error);
+      }
+      setLoading(false);
+    };
+    fetchEvents();
   }, []);
 
   const goToPreviousMonth = () => {
