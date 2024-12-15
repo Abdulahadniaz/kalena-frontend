@@ -94,6 +94,10 @@ export default function GridPage() {
       currentDate.getMonth(),
       dayNumber
     );
+    // if events is null, return null
+    if (events === null) {
+      return [];
+    }
     const eventSummaries = events
       .filter((event) => {
         const eventStartDate = new Date(event.start);
@@ -103,9 +107,9 @@ export default function GridPage() {
           eventStartDate.getFullYear() === clickedDate.getFullYear()
         );
       })
-      .map((event) => event.summary); // Collect all summaries
+      .map((event) => event.summary);
 
-    return eventSummaries.length > 0 ? eventSummaries : null; // Return summaries or null
+    return eventSummaries.length > 0 && eventSummaries;
   };
 
   const isToday = (dayNumber: number) => {
