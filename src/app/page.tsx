@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { Modal } from "./components/Modal";
 
 function getMonthData(year: number, month: number) {
   const firstDay = new Date(year, month, 1).getDay();
@@ -32,6 +33,10 @@ export default function GridPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
+  const [isNewEventModalOpen, setIsNewEventModalOpen] = useState(false);
+  const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
 
   useEffect(() => {
     setToday(new Date());
@@ -80,12 +85,27 @@ export default function GridPage() {
         dayNumber
       );
       console.log("Clicked date:", clickedDate.toDateString());
-      console.log("Day of week:", daysOfWeek[clickedDate.getDay()]);
-      console.log(
-        "Is weekend:",
-        clickedDate.getDay() === 0 || clickedDate.getDay() === 6
-      );
+      setSelectedDay(dayNumber);
+      setIsNewEventModalOpen(true);
+      setSelectedEvents(getEventsForDay(dayNumber));
     }
+  };
+
+  const handleMoreEventsClick = (dayNumber: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedDay(dayNumber);
+    setIsSmallModalOpen(true);
+    setSelectedEvents(getEventsForDay(dayNumber));
+  };
+
+  const getEventsForDay = (dayNumber: number) => {
+    // return [] if events is null
+    if (events === null) {
+      return [];
+    }
+    return events.filter(
+      (event) => new Date(event.start).getDate() === dayNumber
+    );
   };
 
   const getEventSummariesForDay = (dayNumber: number) => {
@@ -185,7 +205,7 @@ export default function GridPage() {
                 ${index % 7 === 6 ? "border-r-0" : ""}
                 ${Math.floor(index / 7) === weeks - 1 ? "border-b-0" : ""}
                 ${isCurrentMonth ? "cursor-pointer " : ""}`}
-                onClick={() => handleCellClick(dayNumber)}
+                onClick={() => isCurrentMonth && handleCellClick(dayNumber)}
               >
                 <span
                   className={`text-xs sm:text-sm font-light mb-1 
@@ -211,7 +231,10 @@ export default function GridPage() {
                         </span>
                       ))}
                       {eventSummaries.length > 2 && (
-                        <span className="sm:text-sm text-xs font-light text-black hover:bg-gray-300 rounded-full px-1 text-center sm:w-[20px] xl:w-[190px] sm:py-1 lg:py-0.5">
+                        <span
+                          className="sm:text-sm text-xs font-light text-black hover:bg-gray-300 rounded-full px-1 text-center sm:w-[20px] xl:w-[190px] sm:py-1 lg:py-0.5"
+                          onClick={(e) => handleMoreEventsClick(dayNumber, e)}
+                        >
                           {eventSummaries.length - 2} more events
                         </span>
                       )}
@@ -223,6 +246,111 @@ export default function GridPage() {
           })}
         </div>
       </div>
+      <Modal
+        isOpen={isNewEventModalOpen}
+        onClose={() => setIsNewEventModalOpen(false)}
+        title={`Create New Event for ${
+          selectedDay
+            ? new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth(),
+                selectedDay
+              ).toDateString()
+            : ""
+        }`}
+        size="large"
+      >
+        <div className="mt-4">
+          <form className="space-y-4">
+            <div>
+              <label
+                htmlFor="eventTitle"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Event Title
+              </label>
+              <input
+                type="text"
+                id="eventTitle"
+                name="eventTitle"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="eventStart"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Start Time
+              </label>
+              <input
+                type="datetime-local"
+                id="eventStart"
+                name="eventStart"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="eventEnd"
+                className="block text-sm font-medium text-gray-700"
+              >
+                End Time
+              </label>
+              <input
+                type="datetime-local"
+                id="eventEnd"
+                name="eventEnd"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="eventDescription"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Description
+              </label>
+              <textarea
+                id="eventDescription"
+                name="eventDescription"
+                rows={3}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              ></textarea>
+            </div>
+            <div>
+              <button
+                type="submit"
+                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Create Event
+              </button>
+            </div>
+          </form>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isSmallModalOpen}
+        onClose={() => setIsSmallModalOpen(false)}
+        title={`All Events for ${
+          selectedDay
+            ? new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth(),
+                selectedDay
+              ).toDateString()
+            : ""
+        }`}
+      >
+        <div className="mt-4">
+          {selectedEvents.map((event, index) => (
+            <div key={index} className="mb-2">
+              <p className="font-semibold">{event.summary}</p>
+            </div>
+          ))}
+        </div>
+      </Modal>
     </div>
   );
 }
