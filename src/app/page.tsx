@@ -105,7 +105,9 @@ export default function GridPage() {
             <span className="italic text-gray-500">
               {today.toDateString()}
               {loading && " - loading events details..."}
-              {events.length > 0 && " - " + events.length + " events upcoming"}
+              {events !== null && events.length > 0
+                ? " - " + events.length + " events upcoming"
+                : "No upcoming events"}
             </span>
           </p>
         </div>
