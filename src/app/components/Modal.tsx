@@ -44,7 +44,7 @@ export function Modal({
         ref={modalRef}
         className={`bg-white rounded-lg p-6 ${
           size === "large"
-            ? "w-4/12 `max-w-xl` h-5/6 overflow-y-auto"
+            ? "w-4/15 `max-w-xl` h-4/10 overflow-y-auto"
             : "w-2/12 max-w-xl"
         }`}
       >

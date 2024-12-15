@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Modal } from "./components/Modal";
+import { Users, Video, MapPin, AlignLeft, Calendar } from "lucide-react";
 
 function getMonthData(year: number, month: number) {
   const firstDay = new Date(year, month, 1).getDay();
@@ -249,87 +250,83 @@ export default function GridPage() {
       <Modal
         isOpen={isNewEventModalOpen}
         onClose={() => setIsNewEventModalOpen(false)}
-        title={`Create New Event for ${
-          selectedDay
-            ? new Date(
-                currentDate.getFullYear(),
-                currentDate.getMonth(),
-                selectedDay
-              ).toDateString()
-            : ""
-        }`}
+        title="Add title and time"
         size="large"
       >
-        <div className="mt-4">
-          <form className="space-y-4">
-            <div>
-              <label
-                htmlFor="eventTitle"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Event Title
-              </label>
-              <input
-                type="text"
-                id="eventTitle"
-                name="eventTitle"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
+        <div className="space-y-6">
+          <div className="flex gap-2">
+            <button className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg font-medium">
+              Event
+            </button>
+            <button className="px-4 py-2 hover:bg-gray-50 rounded-lg">
+              Task
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="Add title"
+              className="w-full px-3 py-2 text-lg border-b border-gray-200 focus:border-blue-500 focus:outline-none"
+            />
+
+            <div className="flex items-center gap-6 text-gray-600">
+              <Calendar className="w-5 h-5" />
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <span>Tuesday, 3 December</span>
+                  <button className="px-4 py-1.5 text-blue-600 rounded-full border hover:bg-gray-50">
+                    Add time
+                  </button>
+                </div>
+                <span className="text-sm text-gray-500">
+                  Doesn&apos;t repeat
+                </span>
+              </div>
             </div>
-            <div>
-              <label
-                htmlFor="eventStart"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Start Time
-              </label>
-              <input
-                type="datetime-local"
-                id="eventStart"
-                name="eventStart"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
+
+            <button className="flex items-center gap-4 w-full px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg">
+              <Users className="w-5 h-5" />
+              <span>Add guests</span>
+            </button>
+
+            <button className="flex items-center gap-4 w-full px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg">
+              <Video className="w-5 h-5" />
+              <span>Add Google Meet video conferencing</span>
+            </button>
+
+            <button className="flex items-center gap-4 w-full px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg">
+              <MapPin className="w-5 h-5" />
+              <span>Add location</span>
+            </button>
+
+            <button className="flex items-center gap-4 w-full px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg">
+              <AlignLeft className="w-5 h-5" />
+              <span>Add description or attachment</span>
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between pt-4 mt-6 border-t">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center">
+                A
+              </div>
+              <div className="text-sm text-gray-600">
+                <div>Abdul Ahad</div>
+                <div>Free • Default visibility • Do not notify</div>
+              </div>
             </div>
-            <div>
-              <label
-                htmlFor="eventEnd"
-                className="block text-sm font-medium text-gray-700"
-              >
-                End Time
-              </label>
-              <input
-                type="datetime-local"
-                id="eventEnd"
-                name="eventEnd"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="eventDescription"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Description
-              </label>
-              <textarea
-                id="eventDescription"
-                name="eventDescription"
-                rows={3}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              ></textarea>
-            </div>
-            <div>
-              <button
-                type="submit"
-                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Create Event
+            <div className="flex items-center gap-4">
+              <button className="px-4 py-2 text-blue-600 hover:bg-gray-50 rounded-lg">
+                More options
+              </button>
+              <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                Save
               </button>
             </div>
-          </form>
+          </div>
         </div>
       </Modal>
-
       <Modal
         isOpen={isSmallModalOpen}
         onClose={() => setIsSmallModalOpen(false)}
