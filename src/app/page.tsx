@@ -101,7 +101,7 @@ export default function GridPage() {
 
   const getEventsForDay = (dayNumber: number) => {
     // return [] if events is null
-    if (events === null) {
+    if (events === null || events.length === 0) {
       return [];
     }
     return events.filter(
@@ -116,7 +116,7 @@ export default function GridPage() {
       dayNumber
     );
     // if events is null, return null
-    if (events === null) {
+    if (events === null || events.length === 0) {
       return [];
     }
     const eventSummaries = events
@@ -225,6 +225,10 @@ export default function GridPage() {
                       {eventSummaries.slice(0, 2).map((summary, idx) => (
                         <span
                           key={idx}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            console.log("clicked");
+                          }}
                           // make each event summary in a rounded box
                           className="sm:text-sm text-xs font-light text-white bg-blue-500 rounded-full px-1 text-center sm:w-[20px] xl:w-[190px] sm:py-1 lg:py-0.5"
                         >
