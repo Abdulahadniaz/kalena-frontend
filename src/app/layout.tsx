@@ -1,6 +1,6 @@
 import "./globals.css";
 import { Inter, Roboto_Slab } from "next/font/google";
-// import Link from "next/link";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const robotoSlab = Roboto_Slab({
@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${robotoSlab.variable}`}>
       <body className="bg-gray-50 text-gray-900 font-sans min-h-screen flex flex-col">
-        {/* <header className="bg-white shadow-sm">
+        <header className="bg-white shadow-sm">
           <nav className=" mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <Link
               href="/"
@@ -34,17 +34,18 @@ export default function RootLayout({
                 href="/login"
                 className="text-blue-600 hover:text-blue-800 transition-colors"
               >
-                Link Calendars
+                Login
+              </Link>
+              <Link
+                href="/signup"
+                className="text-blue-600 hover:text-blue-800 transition-colors"
+              >
+                Sign Up
               </Link>
             </div>
           </nav>
-        </header> */}
-        <main className="flex-grow">{children}</main>
-        {/* <footer className="bg-white border-t border-gray-200 py-4">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500">
-            © {new Date().getFullYear()} Kalena. All rights reserved.
-          </div>
-        </footer> */}
+        </header>
+        <main className="">{children}</main>
       </body>
     </html>
   );

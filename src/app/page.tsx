@@ -38,28 +38,35 @@ export default function GridPage() {
   const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
   const [isNewEventModalOpen, setIsNewEventModalOpen] = useState(false);
   const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
-
+  const test = false;
   useEffect(() => {
     setToday(new Date());
   }, []);
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/calendar/events`
-        );
-        const data = await response.json();
-        console.log(data);
-        setEvents(data);
-      } catch (error) {
-        console.error("Failed to fetch events:", error);
-      }
-      setLoading(false);
-    };
-    fetchEvents();
-  }, []);
+    if (test) {
+      const fetchEvents = async () => {
+        setLoading(true);
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/calendar/events`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const data = await response.json();
+          console.log(data);
+          setEvents(data);
+        } catch (error) {
+          console.error("Failed to fetch events:", error);
+        }
+        setLoading(false);
+      };
+      fetchEvents();
+    }
+  }, [test]);
 
   const goToPreviousMonth = () => {
     setCurrentDate(
@@ -103,10 +110,11 @@ export default function GridPage() {
     // return [] if events is null
     if (events === null || events.length === 0) {
       return [];
+    } else {
+      return events.filter(
+        (event) => new Date(event.start).getDate() === dayNumber
+      );
     }
-    return events.filter(
-      (event) => new Date(event.start).getDate() === dayNumber
-    );
   };
 
   const getEventSummariesForDay = (dayNumber: number) => {
@@ -115,22 +123,23 @@ export default function GridPage() {
       currentDate.getMonth(),
       dayNumber
     );
-    // if events is null, return null
-    if (events === null || events.length === 0) {
+    // if events is null, return empty array and stop
+    if (events === null) {
       return [];
-    }
-    const eventSummaries = events
-      .filter((event) => {
-        const eventStartDate = new Date(event.start);
-        return (
-          eventStartDate.getDate() === clickedDate.getDate() &&
-          eventStartDate.getMonth() === clickedDate.getMonth() &&
-          eventStartDate.getFullYear() === clickedDate.getFullYear()
-        );
-      })
-      .map((event) => event.summary);
+    } else {
+      const eventSummaries = events
+        .filter((event) => {
+          const eventStartDate = new Date(event.start);
+          return (
+            eventStartDate.getDate() === clickedDate.getDate() &&
+            eventStartDate.getMonth() === clickedDate.getMonth() &&
+            eventStartDate.getFullYear() === clickedDate.getFullYear()
+          );
+        })
+        .map((event) => event.summary);
 
-    return eventSummaries.length > 0 && eventSummaries;
+      return eventSummaries.length > 0 && eventSummaries;
+    }
   };
 
   const isToday = (dayNumber: number) => {
