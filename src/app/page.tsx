@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Modal } from "./components/Modal";
 import { Users, Video, MapPin, AlignLeft, Calendar } from "lucide-react";
+import { parseCookies } from "nookies";
 
 function getMonthData(year: number, month: number) {
   const firstDay = new Date(year, month, 1).getDay();
@@ -47,8 +48,17 @@ export default function GridPage() {
     const fetchEvents = async () => {
       setLoading(true);
       try {
+        const cookies = parseCookies();
+        const userId = cookies.user_id;
+
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/calendar/events`
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/calendar/events`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              user_id: userId,
+            },
+          }
         );
         const data = await response.json();
         console.log(data);
@@ -103,10 +113,11 @@ export default function GridPage() {
     // return [] if events is null
     if (events === null || events.length === 0) {
       return [];
+    } else {
+      return events.filter(
+        (event) => new Date(event.start).getDate() === dayNumber
+      );
     }
-    return events.filter(
-      (event) => new Date(event.start).getDate() === dayNumber
-    );
   };
 
   const getEventSummariesForDay = (dayNumber: number) => {
@@ -115,22 +126,23 @@ export default function GridPage() {
       currentDate.getMonth(),
       dayNumber
     );
-    // if events is null, return null
-    if (events === null || events.length === 0) {
+    // if events is null, return empty array and stop
+    if (events === null) {
       return [];
-    }
-    const eventSummaries = events
-      .filter((event) => {
-        const eventStartDate = new Date(event.start);
-        return (
-          eventStartDate.getDate() === clickedDate.getDate() &&
-          eventStartDate.getMonth() === clickedDate.getMonth() &&
-          eventStartDate.getFullYear() === clickedDate.getFullYear()
-        );
-      })
-      .map((event) => event.summary);
+    } else {
+      const eventSummaries = events
+        .filter((event) => {
+          const eventStartDate = new Date(event.start);
+          return (
+            eventStartDate.getDate() === clickedDate.getDate() &&
+            eventStartDate.getMonth() === clickedDate.getMonth() &&
+            eventStartDate.getFullYear() === clickedDate.getFullYear()
+          );
+        })
+        .map((event) => event.summary);
 
-    return eventSummaries.length > 0 && eventSummaries;
+      return eventSummaries.length > 0 && eventSummaries;
+    }
   };
 
   const isToday = (dayNumber: number) => {
