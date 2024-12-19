@@ -17,7 +17,7 @@ export default function SignupPage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/signup`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/signup`,
         {
           method: "POST",
           headers: {
@@ -29,7 +29,7 @@ export default function SignupPage() {
 
       if (response.ok) {
         // Successful signup
-        router.push("/login"); // Redirect to login page
+        router.push("/");
       } else {
         const data = await response.json();
         setError(data.message || "Signup failed");

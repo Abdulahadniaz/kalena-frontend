@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Modal } from "./components/Modal";
 import { Users, Video, MapPin, AlignLeft, Calendar } from "lucide-react";
-import { parseCookies } from "nookies";
 
 function getMonthData(year: number, month: number) {
   const firstDay = new Date(year, month, 1).getDay();
@@ -39,37 +38,35 @@ export default function GridPage() {
   const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
   const [isNewEventModalOpen, setIsNewEventModalOpen] = useState(false);
   const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
-
+  const test = false;
   useEffect(() => {
     setToday(new Date());
   }, []);
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      setLoading(true);
-      try {
-        const cookies = parseCookies();
-        const userId = cookies.user_id;
-
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/calendar/events`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              user_id: userId,
-            },
-          }
-        );
-        const data = await response.json();
-        console.log(data);
-        setEvents(data);
-      } catch (error) {
-        console.error("Failed to fetch events:", error);
-      }
-      setLoading(false);
-    };
-    fetchEvents();
-  }, []);
+    if (test) {
+      const fetchEvents = async () => {
+        setLoading(true);
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/calendar/events`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const data = await response.json();
+          console.log(data);
+          setEvents(data);
+        } catch (error) {
+          console.error("Failed to fetch events:", error);
+        }
+        setLoading(false);
+      };
+      fetchEvents();
+    }
+  }, [test]);
 
   const goToPreviousMonth = () => {
     setCurrentDate(
