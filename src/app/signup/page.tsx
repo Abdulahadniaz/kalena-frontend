@@ -120,7 +120,7 @@ export default function SignupPage() {
             href="/login"
             className="font-medium text-indigo-600 hover:text-indigo-500"
           >
-            Already have an account? Sign in
+            Already have an account? Log in
           </Link>
         </div>
       </div>
