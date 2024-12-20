@@ -31,6 +31,12 @@ export default function RootLayout({
             </Link>
             <div className="space-x-4">
               <Link
+                href="/"
+                className="text-blue-600 hover:text-blue-800 transition-colors"
+              >
+                Home
+              </Link>
+              <Link
                 href="/login"
                 className="text-blue-600 hover:text-blue-800 transition-colors"
               >
