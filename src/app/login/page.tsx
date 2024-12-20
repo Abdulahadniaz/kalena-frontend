@@ -1,14 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { setToken, setUser } from "../utils/utils";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,10 +27,18 @@ export default function LoginPage() {
           body: JSON.stringify({ email, password }),
         }
       );
-
       if (response.ok) {
-        // Successful login
-        router.push("/"); // Redirect to home page or dashboard
+        const data = await response.json();
+        setToken(data.token);
+        setUser(data.user);
+        toast.success(
+          "Login successful! Visit Home page to see your calendar.",
+          {
+            duration: 3000,
+            position: "bottom-center",
+          }
+        );
+        // router.push("/");
       } else {
         const data = await response.json();
         setError(data.message || "Login failed");
@@ -103,6 +113,7 @@ export default function LoginPage() {
           </Link>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 }

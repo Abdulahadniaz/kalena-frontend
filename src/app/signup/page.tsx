@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function SignupPage() {
   const [username, setUsername] = useState("");
@@ -28,8 +29,11 @@ export default function SignupPage() {
       );
 
       if (response.ok) {
-        // Successful signup
-        router.push("/");
+        toast.success("Signup successful! Please log in.", {
+          duration: 3000,
+          position: "bottom-center",
+        });
+        router.push("/login"); // Redirect to login page
       } else {
         const data = await response.json();
         setError(data.message || "Signup failed");
@@ -120,6 +124,7 @@ export default function SignupPage() {
           </Link>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 }
