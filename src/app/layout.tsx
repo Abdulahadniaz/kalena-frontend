@@ -69,7 +69,7 @@ export default function RootLayout({
           </nav>
         </header>
 
-        <main>{children}</main>
+        <main className={roboto.className}>{children}</main>
       </body>
     </html>
   );
