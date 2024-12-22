@@ -7,6 +7,14 @@ import { useState } from "react";
 import { User } from "./utils/utils";
 import { useEffect } from "react";
 import Avatar from "./components/Avatar";
+import { Roboto } from "next/font/google";
+
+const roboto = Roboto({
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default function RootLayout({
   children,
@@ -61,7 +69,7 @@ export default function RootLayout({
           </nav>
         </header>
 
-        <main className="">{children}</main>
+        <main className={roboto.className}>{children}</main>
       </body>
     </html>
   );
