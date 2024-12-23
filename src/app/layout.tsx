@@ -55,7 +55,7 @@ export default function RootLayout({
                     href="/login"
                     className="text-blue-600 hover:text-blue-800 transition-colors"
                   >
-                    Login Now
+                    Login
                   </Link>
                   <Link
                     href={"/signup"}
