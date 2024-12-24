@@ -23,6 +23,7 @@ export default function ProfilePage() {
   }
 
   return (
+    // TODO: Add a profile picture and make divs
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-3xl font-bold mb-6">User Profile</h1>
       <div className="space-y-4">
