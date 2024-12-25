@@ -33,7 +33,6 @@ export default function ProfilePage() {
         <p>
           <strong>Email:</strong> {user.email}
         </p>
-        {/* Add more user details here as needed */}
       </div>
     </div>
   );
